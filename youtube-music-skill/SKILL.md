@@ -1,23 +1,33 @@
 # YouTube Music Skill
 
 ## Overview
-This skill allows you to search for songs and manage playlists on YouTube Music using Python scripts.
+This skill allows you to search for songs and manage playlists on YouTube Music using Python scripts. It provides functionality to search for songs, create playlists, add songs to playlists, list playlists, and retrieve songs from a specific playlist.
 
 ## Usage
-- Search for songs
-- Create and manage playlists
+- Search for songs by title or artist
+- Create new playlists
+- Add songs to existing playlists
+- List all playlists
+- Get songs from a specific playlist by ID
 
 ## Triggers
 - `search_song`: Search for a song by title or artist
-- `manage_playlist`: Create, add/remove songs, list playlists
+- `create_playlist`: Create a new playlist
+- `add_to_playlist`: Add a song to an existing playlist
+- `list_playlists`: List all playlists
+- `get_playlist_songs`: Retrieve songs from a playlist by ID
 
 ## Requirements
-- Python 3.x
-- ytmusicapi library
+- uv (Python package manager)
+- ytmusicapi library (installed via uv)
+- YTMUSIC_HEADERS environment variable set with path to YouTube Music authentication headers
 
 ## Examples
-- Search for "Shape of You" by Ed Sheeran
-- Add "Blinding Lights" to playlist "Favorites"
+- Search for "Shape of You" by Ed Sheeran: `cd scripts && uv run song_search.py "Shape of You" "Ed Sheeran"`
+- Create a playlist: `cd scripts && uv run playlist_manager.py create "My Favorites"`
+- Add a song to playlist: `cd scripts && uv run playlist_manager.py add "My Favorites" "Blinding Lights" "The Weeknd"`
+- List playlists: `cd scripts && uv run playlist_manager.py list`
+- Get songs from playlist: `cd scripts && uv run playlist_manager.py get "PLAYLIST_ID"`
 
 ---
 
