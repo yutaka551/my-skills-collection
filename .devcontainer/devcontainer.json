@@ -1,0 +1,10 @@
+{
+    "name": "Ubuntu 22 DevContainer",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/python:1": {}
+    }
+}
