@@ -14,6 +14,7 @@ This skill allows you to search for songs and manage playlists on YouTube Music 
 - `search_song`: Search for a song by title or artist
 - `create_playlist`: Create a new playlist
 - `add_to_playlist`: Add a song to an existing playlist
+- `remove_from_playlist`: Remove a song from an existing playlist
 - `list_playlists`: List all playlists
 - `get_playlist_songs`: Retrieve songs from a playlist by ID
 
@@ -26,6 +27,7 @@ This skill allows you to search for songs and manage playlists on YouTube Music 
 - Search for "Shape of You" by Ed Sheeran: `cd scripts && uv run song_search.py "Shape of You" "Ed Sheeran"`
 - Create a playlist: `cd scripts && uv run playlist_manager.py create "My Favorites"`
 - Add a song to playlist: `cd scripts && uv run playlist_manager.py add "My Favorites" "Blinding Lights" "The Weeknd"`
+- Remove a song from playlist: `cd scripts && uv run playlist_manager.py remove "My Favorites" "Blinding Lights" "The Weeknd"`
 - List playlists: `cd scripts && uv run playlist_manager.py list`
 - Get songs from playlist: `cd scripts && uv run playlist_manager.py get "PLAYLIST_ID"`
 

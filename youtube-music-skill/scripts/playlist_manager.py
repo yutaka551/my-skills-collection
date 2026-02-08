@@ -47,10 +47,39 @@ def get_playlist_songs(playlist_id):
     songs = playlist_data.get('tracks', [])
     return songs
 
+def remove_song_from_playlist(playlist_name, song_name, artist_name=None):
+    ytmusic = get_ytmusic()
+    playlists = ytmusic.get_library_playlists()
+    playlist_id = next((pl['playlistId'] for pl in playlists if pl['title'] == playlist_name), None)
+    if not playlist_id:
+        print(f"Playlist '{playlist_name}' not found.")
+        return
+    playlist_data = ytmusic.get_playlist(playlist_id, limit=None)
+    tracks = playlist_data.get('tracks', [])
+    query = song_name if not artist_name else f"{song_name} {artist_name}"
+    # Find the track to remove
+    for track in tracks:
+        if track['title'].lower() == song_name.lower():
+            if artist_name:
+                track_artists = [artist['name'].lower() for artist in track.get('artists', [])]
+                if artist_name.lower() in track_artists:
+                    # Remove the track
+                    videos_to_remove = [{'videoId': track['videoId'], 'setVideoId': track['setVideoId']}]
+                    ytmusic.remove_playlist_items(playlist_id, videos_to_remove)
+                    print(f"Removed '{song_name}' by {artist_name} from playlist '{playlist_name}'.")
+                    return
+            else:
+                # Remove the track
+                videos_to_remove = [{'videoId': track['videoId'], 'setVideoId': track['setVideoId']}]
+                ytmusic.remove_playlist_items(playlist_id, videos_to_remove)
+                print(f"Removed '{song_name}' from playlist '{playlist_name}'.")
+                return
+    print(f"Song '{song_name}' not found in playlist '{playlist_name}'.")
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python playlist_manager.py <action> <playlist_name> [<song_name> <artist_name>]")
-        print("Actions: create <playlist_name>, add <playlist_name> <song_name> [<artist_name>], list, get <playlist_id>")
+        print("Actions: create <playlist_name>, add <playlist_name> <song_name> [<artist_name>], remove <playlist_name> <song_name> [<artist_name>], list, get <playlist_id>")
         sys.exit(1)
     action = sys.argv[1]
     if action == "create":
@@ -60,6 +89,11 @@ def main():
             print("Usage: python playlist_manager.py add <playlist_name> <song_name> [<artist_name>]")
             sys.exit(1)
         add_song_to_playlist(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else None)
+    elif action == "remove":
+        if len(sys.argv) < 4:
+            print("Usage: python playlist_manager.py remove <playlist_name> <song_name> [<artist_name>]")
+            sys.exit(1)
+        remove_song_from_playlist(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else None)
     elif action == "list":
         list_playlists()
     elif action == "get":
