@@ -19,17 +19,18 @@ This skill allows you to search for songs and manage playlists on YouTube Music 
 - `get_playlist_songs`: Retrieve songs from a playlist by ID
 
 ## Requirements
-- uv (Python package manager)
-- ytmusicapi library (installed via uv)
-- YTMUSIC_HEADERS environment variable set with path to YouTube Music authentication headers
+Python 3
+ytmusicapi library (install with pip)
+  - Install: `pip install ytmusicapi`
+YTMUSIC_HEADERS environment variable set with path to YouTube Music authentication headers
 
 ## Examples
-- Search for "Shape of You" by Ed Sheeran: `cd scripts && uv run song_search.py "Shape of You" "Ed Sheeran"`
-- Create a playlist: `cd scripts && uv run playlist_manager.py create "My Favorites"`
-- Add a song to playlist: `cd scripts && uv run playlist_manager.py add "My Favorites" "Blinding Lights" "The Weeknd"`
-- Remove a song from playlist: `cd scripts && uv run playlist_manager.py remove "My Favorites" "Blinding Lights" "The Weeknd"`
-- List playlists: `cd scripts && uv run playlist_manager.py list`
-- Get songs from playlist: `cd scripts && uv run playlist_manager.py get "PLAYLIST_ID"`
+Search for "Shape of You" by Ed Sheeran: `python song_search.py "Shape of You" "Ed Sheeran"`
+Create a playlist: `python playlist_manager.py create "My Favorites"`
+Add a song to playlist: `python playlist_manager.py add "My Favorites" "Blinding Lights" "The Weeknd"`
+Remove a song from playlist: `python playlist_manager.py remove "My Favorites" "Blinding Lights" "The Weeknd"`
+List playlists: `python playlist_manager.py list`
+Get songs from playlist: `python playlist_manager.py get "PLAYLIST_ID"`
 
 ---
 
