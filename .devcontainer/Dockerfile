@@ -1,3 +1,3 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
+FROM mcr.microsoft.com/devcontainers/javascript-node
 
 RUN curl -fsSL https://gh.io/copilot-install | bash
