@@ -2,4 +2,4 @@
 tmp
 .playwright-cli/*
 .playwright/*
-youtube-music-skill/scripts/__pycache__/*
+youtube-music-skill/scripts/__pycache__*
