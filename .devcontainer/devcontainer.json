@@ -6,5 +6,10 @@
     "features": {
         "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/python:1": {}
+    },
+    "env": {
+        "YTMUSIC_HEADERS": "tmp/youtube_music_auth_header.json"
     }
+    ,
+    "postCreateCommand": "echo 'export YTMUSIC_HEADERS=\"/workspaces/my-skills-collection/tmp/youtube_music_auth_header.json\"' >> /home/node/.bashrc"
 }
