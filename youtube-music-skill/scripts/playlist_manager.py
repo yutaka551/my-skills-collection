@@ -4,6 +4,28 @@
 from ytmusicapi import YTMusic
 import sys
 import os
+import uuid
+import shutil
+import atexit
+from pathlib import Path
+
+# Session-temp utilities ---------------------------------------------------
+def create_session_tmp(session_id=None):
+    root = Path(__file__).resolve().parents[2]
+    tmp_base = root / "tmp"
+    tmp_base.mkdir(parents=True, exist_ok=True)
+    sid = session_id or os.environ.get("SESSION_ID") or str(uuid.uuid4())
+    session_dir = tmp_base / sid
+    session_dir.mkdir(parents=True, exist_ok=True)
+    os.environ["SESSION_TMP_DIR"] = str(session_dir)
+    return session_dir
+
+def cleanup_session_tmp(session_dir: Path):
+    try:
+        if session_dir.exists():
+            shutil.rmtree(session_dir)
+    except Exception as e:
+        print(f"Warning: failed to remove session tmp dir {session_dir}: {e}")
 
 # Usage: python playlist_manager.py <action> <playlist_name> [<song_name> <artist_name>]
 # Actions: create <playlist_name>, add <playlist_name> <song_name> [<artist_name>], list, get <playlist_id>
@@ -107,4 +129,11 @@ def main():
         print("Unknown action.")
 
 if __name__ == "__main__":
-    main()
+    # create session tmp dir and ensure cleanup on exit
+    session_dir = create_session_tmp()
+    atexit.register(cleanup_session_tmp, session_dir)
+    try:
+        print(f"Using session tmp dir: {session_dir}")
+        main()
+    finally:
+        cleanup_session_tmp(session_dir)

@@ -10,6 +10,15 @@ This skill allows you to search for songs and manage playlists on YouTube Music 
 - List all playlists
 - Get songs from a specific playlist by ID
 
+## Constraints
+- **Do not create new Python scripts or programs.**
+- Execute tasks exclusively by calling the existing scripts (`song_search.py` and `playlist_manager.py`) as shown in the examples.
+- For complex tasks, combine multiple command calls in sequence.
+- Temporary files and helper scripts (if any) must be created inside a session directory under `tmp/` — for example `tmp/<session-id>/`. Remove that directory and all its contents when the task is finished.
+- Session-temp utilities for creating/cleaning session directories are centralized in `scripts/playlist_manager.py`; other scripts import these utilities instead of re-implementing them.
+
+> Note: 一時ファイルは必ず `tmp/<session-id>/` 配下に作成し、作業完了時に削除してください。
+
 ## Triggers
 - `search_song`: Search for a song by title or artist
 - `create_playlist`: Create a new playlist
