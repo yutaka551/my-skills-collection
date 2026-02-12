@@ -27,8 +27,13 @@ def cleanup_session_tmp(session_dir: Path):
     except Exception as e:
         print(f"Warning: failed to remove session tmp dir {session_dir}: {e}")
 
-# Usage: python playlist_manager.py <action> <playlist_name> [<song_name> <artist_name>]
-# Actions: create <playlist_name>, add <playlist_name> <song_name> [<artist_name>], list, get <playlist_id>
+# Usage: python playlist_manager.py <action> <playlist_name> [<description>] [<song_name> <artist_name>]
+# Actions: create <playlist_name> [<description>], add <playlist_name> <song_name> [<artist_name>], list, get <playlist_id>  
+#
+# Notes for `create`:
+# - If <description> is a URL, the script will fetch the page title and set the playlist description to "<page title> — <URL>".
+# - If <description> is non-URL text, it will be used as the playlist description.
+# - If omitted or not useful, the playlist description will be empty.
 def get_ytmusic():
     headers_path = os.environ.get("YTMUSIC_HEADERS")
     if not headers_path:
@@ -36,10 +41,21 @@ def get_ytmusic():
         sys.exit(1)
     return YTMusic(headers_path)
 
-def create_playlist(playlist_name):
+
+def create_playlist(playlist_name, description=None, privacy="PRIVATE"):
+    """Create a playlist.
+
+    privacy: one of 'PRIVATE', 'UNLISTED', 'PUBLIC' (case-insensitive). Defaults to 'PRIVATE'.
+    The description argument is used exactly as provided (or empty if None).
+    """
     ytmusic = get_ytmusic()
-    playlist_id = ytmusic.create_playlist(playlist_name, "Created by YouTube Music Skill")
-    print(f"Playlist '{playlist_name}' created with ID: {playlist_id}")
+    desc_text = description or ""
+    privacy_param = (privacy or "PRIVATE").upper()
+    if privacy_param not in ("PRIVATE", "UNLISTED", "PUBLIC"):
+        print(f"Invalid privacy '{privacy}'. Falling back to PRIVATE.")
+        privacy_param = "PRIVATE"
+    playlist_id = ytmusic.create_playlist(playlist_name, desc_text, privacy_status=privacy_param)
+    print(f"Playlist '{playlist_name}' created with ID: {playlist_id} (privacy={privacy_param})")
 
 def add_song_to_playlist(playlist_name, song_name, artist_name=None):
     ytmusic = get_ytmusic()
@@ -100,12 +116,17 @@ def remove_song_from_playlist(playlist_name, song_name, artist_name=None):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python playlist_manager.py <action> <playlist_name> [<song_name> <artist_name>]")
-        print("Actions: create <playlist_name>, add <playlist_name> <song_name> [<artist_name>], remove <playlist_name> <song_name> [<artist_name>], list, get <playlist_id>")
+        print("Usage: python playlist_manager.py <action> <playlist_name> [<description>] [<song_name> <artist_name>] [<privacy>]")
+        print("Actions: create <playlist_name> [<description>] [<privacy>], add <playlist_name> <song_name> [<artist_name>], remove <playlist_name> <song_name> [<artist_name>], list, get <playlist_id>")
+        print("  <privacy> can be: private (default), unlisted, public")
         sys.exit(1)
     action = sys.argv[1]
     if action == "create":
-        create_playlist(sys.argv[2])
+        if len(sys.argv) < 3:
+            print("Usage: python playlist_manager.py create <playlist_name> [<description>] [<privacy>]")
+            sys.exit(1)
+        privacy_arg = sys.argv[4] if len(sys.argv) > 4 else None
+        create_playlist(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None, privacy_arg)
     elif action == "add":
         if len(sys.argv) < 4:
             print("Usage: python playlist_manager.py add <playlist_name> <song_name> [<artist_name>]")

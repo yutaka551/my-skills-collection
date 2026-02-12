@@ -6,6 +6,7 @@ This skill allows you to search for songs and manage playlists on YouTube Music 
 ## Usage
 - Search for songs by title or artist
 - Create new playlists
+  - The script accepts an optional description string. If the user supplies a URL, the assistant should fetch the page title and provide "<page title> — <URL>" as the description when calling the script. If the user supplies non-URL text, use it as the playlist description; if no suitable description is provided, leave the description empty.
 - Add songs to existing playlists
 - List all playlists
 - Get songs from a specific playlist by ID
@@ -21,7 +22,7 @@ This skill allows you to search for songs and manage playlists on YouTube Music 
 
 ## Triggers
 - `search_song`: Search for a song by title or artist
-- `create_playlist`: Create a new playlist
+- `create_playlist`: Create a new playlist — accepts an optional description string; if the user provides a URL, the assistant should fetch the page title and pass "<title> — <URL>" as the `description` argument to the script; the script will use the provided description as-is.
 - `add_to_playlist`: Add a song to an existing playlist
 - `remove_from_playlist`: Remove a song from an existing playlist
 - `list_playlists`: List all playlists
@@ -35,7 +36,12 @@ YTMUSIC_HEADERS environment variable set with path to YouTube Music authenticati
 
 ## Examples
 Search for "Shape of You" by Ed Sheeran: `python song_search.py "Shape of You" "Ed Sheeran"`
-Create a playlist: `python playlist_manager.py create "My Favorites"`
+Create a playlist (no description): `python playlist_manager.py create "My Favorites"`
+Create a playlist with plain-text description: `python playlist_manager.py create "Chill Vibes" "Late-night lounge and downtempo"`
+Create a playlist from a URL (description will be set to the page title + URL): `python playlist_manager.py create "Read & Listen" "https://example.com/some-article"`
+
+- Behavior: the script accepts an optional description string and uses it as-is. If you want the playlist description to include a page title for a URL, the assistant (LLM) should fetch the page title and call the script with "<page title> — <URL>" as the description.
+
 Add a song to playlist: `python playlist_manager.py add "My Favorites" "Blinding Lights" "The Weeknd"`
 Remove a song from playlist: `python playlist_manager.py remove "My Favorites" "Blinding Lights" "The Weeknd"`
 List playlists: `python playlist_manager.py list`
