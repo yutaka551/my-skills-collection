@@ -5,15 +5,19 @@
 ## 目的
 スマホアプリの企画・設計・開発に必要なドキュメントやファイルを体系的に管理するためのディレクトリです。
 
-## 構成例
+## 構成例（2026/2/14時点）
 - 企画書・要件定義（proposal.md）
-- UI/UX設計（ui_designs.md, wireframes.md, screen_flow.md）
-- 技術調査・技術選定（tech_survey.md, tech_survey_summary.md）
-- 実装計画（implementation_plan.md, plan.md）
+- 画面設計・UI/UX仕様（ui_designs.md, wireframes.md, screen_flow.md）
+- 実装計画・モジュール分割（implementation_plan.md）
+- 技術調査・検証（tech_survey.md）
 - シーケンス図（sequence_diagrams.md）
-- テスト仕様書（test_specification.md）
-- 開発環境構築手順（devcontainer_setup.md, .devcontainer/）
+- テスト設計（test_specification.md）※TDD主眼、主要ケースのみ
+- 作業記録・ガイド（work_log.md, project_workflow_guide.md）
 - その他関連資料
+
+## 備考
+- シーケンス図（sequence_diagrams.md）は主要イベントのメソッド呼び出しをmermaid形式で記載
+- テスト設計（test_spec.md）はTDDを主眼とし、網羅的なテストではなく主要ケースに絞っている
 
 ## 現状の進捗・今後の作業計画
 - 技術調査・実装計画・テスト観点まで完了

@@ -12,8 +12,10 @@
 - ワイヤーフレーム（wireframes.md）
 - 技術調査レポート（tech_survey.md）
 - 実装計画書（implementation_plan.md）
-- テスト仕様書（test_spec.md）
+- シーケンス図（sequence_diagrams.md）
+- テスト仕様書（test_specification.md）※TDD主眼、主要ケースのみ
 - 開発環境構成（devcontainer/）
+- 作業記録・ガイド（work_log.md, project_workflow_guide.md）
 - その他関連資料
 
 ## 現状の進捗・今後の作業計画
