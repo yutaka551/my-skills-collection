@@ -44,10 +44,13 @@
 - **`ICameraController`** (interface)
   - `openCamera()`
   - `startPreview(surface: Surface)`
+  - `pausePreview()`
+  - `resumePreview()`
   - `setFocusPoint(x: Float, y: Float)`
+  - `waitForAutoFocus(): Boolean`
   - `setExposure(value: Float)`
   - `setWhiteBalance(value: Float)`
-  - `captureImage(callback: (Bitmap) -> Unit)`
+  - `captureImage(): Result<Bitmap>`
   - `closeCamera()`
   
 - **`Camera2Controller`** (implementation)
@@ -109,10 +112,10 @@
 
 #### 主要クラス
 - **`IImageStorage`** (interface)
-  - `saveImage(bitmap: Bitmap, displayName: String): Uri?`
-  - `loadImage(uri: Uri): Bitmap?`
-  - `saveTempImage(bitmap: Bitmap): File`
-  - `deleteTempImages()`
+  - `saveImage(bitmap: Bitmap, displayName: String): Result<Uri>`
+  - `loadImage(uri: Uri): Result<Bitmap>`
+  - `saveTempImage(bitmap: Bitmap): Result<File>`
+  - `deleteTempImages(): Result<Unit>`
   
 - **`MediaStoreImageStorage`** (implementation)
   - MediaStore API経由の実装（Scoped Storage対応）
@@ -142,13 +145,25 @@
   - `onCaptureButtonPressed()`
   - `onExposureChanged(value: Float)`
   - `onWhiteBalanceChanged(value: Float)`
+  - `onErrorDismissed()`
+  - `onSurfaceAvailable(surface: Surface)`
+  - `onResume()`
   
 - **`CameraUiState`** (data class)
   - `focusPoints: List<PointF>`
   - `exposure: Float`
   - `whiteBalance: Float`
-  - `captureState: CaptureState` (Idle/Capturing/Processing/Completed)
+  - `captureState: CaptureState` (Idle/Capturing/Processing/Completed/Error)
+  - `progress: Float?` (0.0-1.0, 合成進捗)
+  - `errorMessage: String?`
   - `resultImageUri: Uri?`
+
+- **`CaptureState`** (sealed class)
+  - `Idle`: アイドル状態
+  - `Capturing`: 撮影中
+  - `Processing(progress: Float)`: 画像合成中
+  - `Completed(uri: Uri)`: 完了
+  - `Error(message: String)`: エラー
 
 #### テスト方針
 - **Unit Test**: ViewModelのロジック（状態遷移、UseCase呼び出し）をJUnit + MockKでテスト
@@ -170,11 +185,16 @@
 #### 主要クラス
 - **`CaptureAndStackUseCase`**
   - 2点フォーカス撮影 → 画像合成 → 保存の一連の処理
-  - `execute(point1: PointF, point2: PointF): Result<Uri>`
+  - `execute(point1: PointF, point2: PointF, progressCallback: (Float) -> Unit): Result<Uri>`
+  - 進捗通知機能を含む（0.0-1.0の値でコールバック）
   
 - **`SetCameraConfigUseCase`**
   - カメラ設定値の適用
   - `execute(config: CameraConfiguration): Result<Unit>`
+
+- **`Result<T>`** (sealed class)
+  - `Success(data: T)`: 成功
+  - `Error(message: String, exception: Exception?)`: エラー
 
 #### テスト方針
 - **Unit Test**: UseCaseのロジックを、Repository/Serviceのモックを使用してテスト
@@ -476,3 +496,14 @@ app/
 ---
 
 ※本実装計画は、要件変更・技術的制約により随時更新されます。
+
+## シーケンス図
+
+詳細なシーケンス図は`sequence_diagrams.md`を参照してください。
+
+- アプリ起動→カメラプレビュー表示
+- フォーカスポイント2点指定→撮影→画像合成→保存
+- マニュアル設定（露出・WB）調整
+- 設定画面遷移
+- エラーハンドリング（撮影失敗）
+
