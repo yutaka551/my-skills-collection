@@ -1,0 +1,24 @@
+// VS Code + devcontainer でKotlin/Android開発を行うためのサンプル構成ファイル
+{
+  "name": "Kotlin Android Dev",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17"
+    },
+    "ghcr.io/devcontainers/features/android-sdk:1": {
+      "version": "34.0.0"
+    },
+    "ghcr.io/devcontainers/features/kotlin:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "fwcd.kotlin",
+        "ms-androidtools.vscode-android-emulator"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}
