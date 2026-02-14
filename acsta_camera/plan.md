@@ -1,18 +1,19 @@
-# acsta_camera
+# acsta_camera 開発計画・進行状況
 
-このディレクトリには、スマホアプリ「acsta_camera」の企画・設計・関連資料を保存します。
+このドキュメントは「アクスタカメラ」アプリの開発計画・進行状況・引き継ぎ事項をまとめたものです。
 
 ## 目的
-スマホアプリの企画・設計・開発に必要なドキュメントやファイルを体系的に管理するためのディレクトリです。
+- スマホアプリ「acsta_camera」の企画・設計・開発に必要なドキュメントやファイルを体系的に管理する。
 
-## 構成例
-- 企画書・要件定義（proposal.md）
-- UI/UX設計（ui_designs.md, wireframes.md, screen_flow.md）
-- 技術調査・技術選定（tech_survey.md, tech_survey_summary.md）
-- 実装計画（implementation_plan.md, plan.md）
-- シーケンス図（sequence_diagrams.md）
-- テスト仕様書（test_specification.md）
-- 開発環境構築手順（devcontainer_setup.md, .devcontainer/）
+## 構成例（現状反映）
+- 企画書（proposal.md）
+- 画面設計（ui_designs.md）
+- 画面遷移図（screen_flow.md）
+- ワイヤーフレーム（wireframes.md）
+- 技術調査レポート（tech_survey.md）
+- 実装計画書（implementation_plan.md）
+- テスト仕様書（test_spec.md）
+- 開発環境構成（devcontainer/）
 - その他関連資料
 
 ## 現状の進捗・今後の作業計画
@@ -30,7 +31,6 @@
 7. リリースノート・ユーザーマニュアル
 
 #### 引き継ぎ事項
-- セッション切り替え時はplan.mdの最新内容を必ず反映・確認すること
+- セッション切替時は本計画（このファイル）の最新内容を必ず反映・確認すること
 - 技術調査・設計・テスト観点はacsta_camera配下の各mdファイルに記録済み
 - 開発環境（DevContainer等）の整備が次の優先タスク
-
